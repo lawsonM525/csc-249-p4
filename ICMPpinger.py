@@ -64,8 +64,13 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         # Fill in start #
         #---------------#
 
-            # TODO: Fetch the ICMP header from the IP packet
-            # Soluton can be implemented in 6 lines of Python code.
+        ipHeader = recPacket[:20] # unpack IP header
+        icmpHeader = recPacket[20:28] # unpack ICMP header
+        icmpType, icmpCode, icmpChecksum, icmpID, icmpSequence = struct.unpack("bbHHh", icmpHeader)
+
+        if icmpID == ID:
+            sendTime = struct.unpack("d", recPacket[28:])[0] #extract timestamp from the original packet
+            rtt = timeReceived - sendTime #calculate round trip time
 
         #-------------#
         # Fill in end #
