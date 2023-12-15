@@ -122,7 +122,7 @@ def doOnePing(destAddr, timeout):
     mySocket.close() 
     return delay
 
-def ping(host, timeout=2, repeat=3):
+def ping(host, timeout=1, repeat=3):
 
     # timeout=1 means: If one second goes by without a reply from the server,
     # the client assumes that either the client's ping or the server's pong is lost 
