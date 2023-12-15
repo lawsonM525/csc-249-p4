@@ -138,13 +138,16 @@ def ping(host, timeout=1, repeat=3):
     while (numPings <= repeat) :
         delay = doOnePing(dest, timeout) 
         print(f"Ping {numPings} RTT {delay} millisec")
-        total_rtt += delay
+        total_rtt += delay if delay is int else 0
         time.sleep(1) # one second 
         numPings += 1
 
     # calculate average
-    avg = total_rtt / repeat
-    print(f"Average RTT: {avg} millisec")
+    if total_rtt > 0:
+        avg = total_rtt / repeat
+        print(f"Average RTT: {avg} millisec")
+    else:
+        print("No average RTT calculated.")
     
     return delay
 
