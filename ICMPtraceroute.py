@@ -111,17 +111,17 @@ def get_route(hostname):
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 +bytes])[0]
-                    print(" %d rtt=%.0f ms %s" %(ttl, (timeReceived -t)*1000, addr[0]))
+                    print(f" {ttl} rtt={round((timeReceived - t) * 1000)} ms {sender_ip} ({sender_hostname})")
 
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    print(" %d rtt=%.0f ms %s" %(ttl, (timeReceived-t)*1000, addr[0]))
+                    print(f" {ttl} rtt={round((timeReceived - t) * 1000)} ms {sender_ip} ({sender_hostname})")
 
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    print(" %d rtt=%.0f ms %s" %(ttl, (timeReceived - timeSent)*1000, addr[0]))
+                    print(f" {ttl} rtt={round((timeReceived - timeSent) * 1000)} ms {sender_ip} ({sender_hostname})")
                     return
 
                 else:
