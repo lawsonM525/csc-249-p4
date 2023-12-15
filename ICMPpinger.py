@@ -138,7 +138,8 @@ def ping(host, timeout=1, repeat=3):
     while (numPings <= repeat) :
         delay = doOnePing(dest, timeout) 
         print(f"Ping {numPings} RTT {delay} millisec")
-        total_rtt += delay if isinstance(delay, int) else 0
+        if delay != "Request timed out.":
+            total_rtt += delay
         time.sleep(1) # one second 
         numPings += 1
 
