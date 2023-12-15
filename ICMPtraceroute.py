@@ -27,11 +27,22 @@ def build_packet():
     # Fill in start #
     #---------------#
 
+    myChecksum = 0
     ID = os.getpid() & 0xFFFF
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, 0, ID, 1)
+
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     data = struct.pack("d", time.time())
+
+    # Calculate the checksum on the data and the dummy header.
     myChecksum = checksum(header + data)
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, htons(myChecksum) & 0xffff, ID, 1)
+
+    # Get the right checksum, and put in the header
+    if sys.platform == 'darwin':
+        myChecksum = htons(myChecksum) & 0xffff
+    else:
+        myChecksum = htons(myChecksum)
+
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     #-------------#
     # Fill in end #
     #-------------#
