@@ -134,7 +134,7 @@ def ping(host, timeout=1, repeat=3):
     numPings = 1
     while (numPings <= repeat) :
         delay = doOnePing(dest, timeout) 
-        print(f"Ping {numPings} RTT {delay} sec")
+        print(f"Ping {numPings} RTT {delay} millisec")
         time.sleep(1) # one second 
         numPings += 1
     return delay
