@@ -2,8 +2,6 @@
 
 _Attribution: this assignment is based on ICMP Pinger Lab and ICMP Traceroute Lab from Computer Networking: a Top-Down Approach by Jim Kurose and Keith Ross. It was modified for use in CSC249: Networks at Smith College by R. Jordan Crouser in Fall 2022, and further modified by B. Cheikes for use in Fall 2023._
 
-**IMPORTANT: Due to a still-mysterious OS incompatibility, the traceroute code provided in this assignment does not seem to behave correctly when run under native Windows. The code _does_ behave properly when run under MacOS or Linux.**
-
 In this assignment, you will gain a better understanding of Internet Control Message Protocol (ICMP) by implementing your own **`ping`** and **`traceroute`** applications using ICMP request and reply messages. After building these tools you will use them to carry out some basic network performance analysis.
 
 The network utility `ping` is a computer application used to test whether a particular host is reachable across an IP network. It is also used to self-test the network interface card of the computer or as a latency test. It works by sending ICMP `echo` packets to the target host and listening for ICMP `echo reply` packets in response (the return `echo reply` is sometimes called a _pong_). As written, `ping` measures the round-trip time (RTT), records packet loss, and prints a statistical summary of the echo reply packets received (min, max, and the mean of the round-trip times and in some versions the standard deviation of the mean).
@@ -48,8 +46,12 @@ In this section, we'll expand on the pinger in order to implement a traceroute a
 
 Your task is to develop your own `traceroute` application in Python using ICMP. Your application will use ICMP but again, in order to keep it simple, will not exactly follow the official specification in RFC 1739. As you did with the ping program, you should also modify the code so that it takes an IP address or domain name from the command line.
 
+**IMPORTANT:** It has been found that the Windows firewall may block ICMP "time exceeded" packets returned from intermediate routers. If you are testing your applications on Windows and discover that your traceroute program seems to time out on every attempt, then try either of these options:
+1. Add a firewall rule that will allow inbound ICMP time-exceeded messages to be passed through to applications;
+2. Temporarily turn off the Windows firewall while you are testing your application. Be sure to turn the firewall back on when you're done!
+
 ### Support Code
-The file `ICMPtraceroute.py` contains starter code for the client-side behavior of your `traceroute` program. Your task is to fill in code in the areas marked with `#Fill in start` and `#Fill in end` in order to get your program to behave as described. **IMPORTANT: Due to a still-mysterious OS incompatibility, the traceroute code provided in this assignment does not seem to behave correctly when run under native Windows.**
+The file `ICMPtraceroute.py` contains starter code for the client-side behavior of your `traceroute` program. Your task is to fill in code in the areas marked with `#Fill in start` and `#Fill in end` in order to get your program to behave as described.
 
 ### Details
 1. As before, this exercise also requires the use of raw sockets. In most operating systems, you will need to run your program with administrator/root privileges.
@@ -57,7 +59,7 @@ The file `ICMPtraceroute.py` contains starter code for the client-side behavior 
 3. You may have to turn your firewall or antivirus software off to allow the messages to be sent and received.
 
 ### Optional Feature
-Currently the application only prints out a list of ip addresses of all the routers along the path from source to the destination. Try using the `gethostbyname(...)` method to print out the names of each intermediate route along the route.
+Currently the application only prints out a list of ip addresses of all the routers along the path from source to the destination. Try using the `gethostbyaddr(...)` method to print out the names of each intermediate route along the route.
 
 ### Traceroute Performance Data Collection
 When you think your traceroute program is working properly, systematically run it against the ten domains in your spreadsheet. **Capture the output of this activity** as this will be one of your project deliverables. If you are uncertain of whether your program is performing correctly, compare its output to that of the standard traceroute application that is built into most operating systems. If your traceroute implementation returns significantly different results from the built-in application, then your implementation is probably not correct.
