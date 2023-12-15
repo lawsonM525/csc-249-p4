@@ -49,6 +49,7 @@ def build_packet():
     return packet
 
 def get_route(hostname):
+    total_rtt = 0  # set up to count total RTT
     timeLeft = TIMEOUT
     for ttl in range(1,MAX_HOPS):
         for tries in range(TRIES):
@@ -111,18 +112,26 @@ def get_route(hostname):
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 +bytes])[0]
+                    hop_rtt = round((timeReceived - t) * 1000)
+                    total_rtt += hop_rtt
                     print(f" {ttl} rtt={round((timeReceived - t) * 1000)} ms {sender_ip} ({sender_hostname})")
 
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
+                    hop_rtt = round((timeReceived - t) * 1000)
+                    total_rtt += hop_rtt
                     print(f" {ttl} rtt={round((timeReceived - t) * 1000)} ms {sender_ip} ({sender_hostname})")
 
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
+                    hop_rtt = round((timeReceived - t) * 1000)
+                    total_rtt += hop_rtt
                     print(f" {ttl} rtt={round((timeReceived - timeSent) * 1000)} ms {sender_ip} ({sender_hostname})")
                     return
+
+                    print(f"\nTotal RTT: {total_rtt} ms")
 
                 else:
                     print("error")
