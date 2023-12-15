@@ -75,6 +75,7 @@ def get_route(hostname):
                 mySocket.sendto(d, (hostname, 0))
                 t= time.time()
                 startedSelect = time.time()
+                timeLeft = max(0, timeLeft)
                 whatReady = select.select([mySocket], [], [], timeLeft)
                 howLongInSelect = (time.time() - startedSelect)
 
@@ -129,7 +130,7 @@ def get_route(hostname):
                     hop_rtt = round((timeReceived - t) * 1000)
                     total_rtt += hop_rtt
                     print(f" {ttl} rtt={round((timeReceived - timeSent) * 1000)} ms {sender_ip} ({sender_hostname})")
-                    print(f"\nTotal RTT: {total_rtt} ms")
+                    print(f"\nTotal RTT: {total_rtt} ms  ")
                     return
 
                     
