@@ -71,7 +71,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         if icmpID == ID:
             sendTime = struct.unpack("d", recPacket[28:])[0] #extract timestamp from the original packet
             rtt = timeReceived - sendTime #calculate round trip time
-            return rtt
+            return rtt * 1000 #return round trip time in milliseconds   
 
         #-------------#
         # Fill in end #
