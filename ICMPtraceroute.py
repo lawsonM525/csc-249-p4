@@ -27,10 +27,11 @@ def build_packet():
     # Fill in start #
     #---------------#
 
-        # TODO: Make the header in a similar way to the ping exercise.
-        # Append checksum to the header.
-        # Solution can be implemented in 10 lines of Python code.
-        
+    ID = os.getpid() & 0xFFFF
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, 0, ID, 1)
+    data = struct.pack("d", time.time())
+    myChecksum = checksum(header + data)
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, htons(myChecksum) & 0xffff, ID, 1)
     #-------------#
     # Fill in end #
     #-------------#
@@ -49,8 +50,9 @@ def get_route(hostname):
             # Fill in start #
             #---------------#
 
-                # TODO: Make a raw socket named mySocket
-                # Solution can be implemented in 2 lines of Python code.
+            # Make a raw socket named mySocket
+            icmp = getprotobyname("icmp")
+            mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
             #-------------#
             # Fill in end #
@@ -85,9 +87,9 @@ def get_route(hostname):
                 # Fill in start #
                 #---------------#
 
-                    #TODO: Fetch the icmp type from the IP packet
-                    # Solution can be implemented in 2 lines of Python code.
-
+                # Fetch the icmp type from the IP packet
+                icmpHeader = recvPacket[20:28]
+                types, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
                 #-------------#
                 # Fill in end #
                 #-------------#
