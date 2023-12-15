@@ -129,14 +129,23 @@ def ping(host, timeout=1, repeat=3):
     dest = gethostbyname(host)
     print(f"Pinging {host} [{dest}] {repeat} times using Python:")
 
+    # calculate total to find avg
+    total_rtt = 0
+
     # Send ping requests to a server separated by approximately one second 
     # Do this only a fixed number of times as determined by 'repeat' argument
     numPings = 1
     while (numPings <= repeat) :
         delay = doOnePing(dest, timeout) 
         print(f"Ping {numPings} RTT {delay} millisec")
+        total_rtt += delay
         time.sleep(1) # one second 
         numPings += 1
+
+    # calculate average
+    avg = total_rtt / repeat
+    print(f"Average RTT: {avg} millisec")
+    
     return delay
 
 # Runs program
