@@ -87,6 +87,12 @@ def get_route(hostname):
                 # Fill in start #
                 #---------------#
 
+                try:
+                    sender_ip = addr[0]
+                    sender_hostname = gethostbyaddr(sender_ip)[0]
+                except herror:
+                    sender_hostname = "Hostname not found"
+
                 # Fetch the icmp type from the IP packet
                 icmpHeader = recvPacket[20:28]
                 types, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
